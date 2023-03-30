@@ -1,10 +1,10 @@
-import 'package:admin_helper/app_to_js/app_to_js.dart';
+import 'dart:convert';
 import 'package:admin_helper/common/responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-
 import 'components/background.dart';
 import 'components/welcome_image.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:js' as js;
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -22,25 +22,26 @@ class WelcomeScreen extends StatelessWidget {
                   child: WelcomeImage(),
                 ),
                 Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      Get.to(() => const AppToJs());
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(
-                          width: 450,
-                          child: Text(
-                            "Welcome to Edu",
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 450,
+                        child: TextButton(
+                          onPressed: () {
+                            callApp();
+                          },
+                          child: const Text(
+                            "Welcome to clx",
                             style: TextStyle(
                               fontSize: 40,
+                               color: Colors.black,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -65,21 +66,35 @@ class MobileWelcomeScreen extends StatelessWidget {
       children: <Widget>[
         const WelcomeImage(),
         Row(
-          children: const [
-            Spacer(),
+          children: [
+            const Spacer(),
             Expanded(
                 flex: 8,
-                child: Text(
-                  "Welcome to Edu",
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
+                child: TextButton(
+                  onPressed: () {
+                    callApp();
+                  },
+                  child: const Text(
+                    "Welcome to clx",
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 )),
-            Spacer(),
+            const Spacer(),
           ],
         ),
       ],
     );
   }
+}
+
+void callApp() {
+  // web 中调用flutter
+  var prams = {"name": "flutter", "age": 18};
+  var str = json.encode(prams);
+  var ob = js.context['testAdd'];
+  js.JsObject.fromBrowserObject(ob).callMethod('postMessage', [str]);
 }
