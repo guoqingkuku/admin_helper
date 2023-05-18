@@ -7,12 +7,12 @@ class AppToJs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Background(
+    return const Background(
       child: SingleChildScrollView(
         child: SafeArea(
           child: Responsive(
-            desktop: Row(children: const [Text('Desktop')]),
-            mobile: const MobileAppToJsScreen(),
+            desktop: Row(children: [Text('Desktop')]),
+            mobile: MobileAppToJsScreen(),
           ),
         ),
       ),
